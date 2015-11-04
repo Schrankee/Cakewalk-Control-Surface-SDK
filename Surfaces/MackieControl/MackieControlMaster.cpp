@@ -6,6 +6,7 @@
 #include "strlcpy.h"
 #include "strlcat.h"
 
+#include "FilterLocator.h"
 #include "MixParam.h"
 #include "KeyBinding.h"
 
@@ -696,8 +697,8 @@ HRESULT CMackieControlMaster::SafeRead(IStream *pStm, void *pv, ULONG cb)
 /////////////////////////////////////////////////////////////////////////////
 
 void CALLBACK EXPORT CMackieControlMaster::_TransportTimerCallback(UINT uID, UINT uMsg,
-																	DWORD dwUser, DWORD dw1,
-																	DWORD dw2)
+																	DWORD_PTR dwUser, DWORD_PTR dw1,
+																	DWORD_PTR dw2)
 {
 	CMackieControlMaster *pMC = (CMackieControlMaster *)dwUser;
 
@@ -730,7 +731,7 @@ void CMackieControlMaster::SetTransportCallbackTimer(float fAlpha, UINT uMax, UI
 	m_uiTransportTimerID = timeSetEvent(uElapse,
 										m_wTransportTimerPeriod,
 										(LPTIMECALLBACK)_TransportTimerCallback,
-										(DWORD)this,
+										(DWORD_PTR)this,
 										TIME_ONESHOT | TIME_CALLBACK_FUNCTION);
 
 	if (!m_uiTransportTimerID)
@@ -765,11 +766,11 @@ void CMackieControlMaster::KillTransportCallbackTimer()
 /////////////////////////////////////////////////////////////////////////////
 
 void CALLBACK EXPORT CMackieControlMaster::_KeyRepeatTimerCallback(UINT uID, UINT uMsg,
-																	DWORD dwUser, DWORD dw1,
-																	DWORD dw2)
+																	DWORD_PTR dwUser, DWORD_PTR dw1,
+																	DWORD_PTR dw2)
 {
 	CMackieControlMaster *pMC = (CMackieControlMaster *)dwUser;
-
+	
 	if (pMC)
 	{
 		pMC->KillKeyRepeatCallbackTimer();
@@ -799,7 +800,7 @@ void CMackieControlMaster::SetKeyRepeatCallbackTimer(float fAlpha, UINT uMax, UI
 	m_uiKeyRepeatTimerID = timeSetEvent(uElapse,
 										m_wKeyRepeatTimerPeriod,
 										(LPTIMECALLBACK)_KeyRepeatTimerCallback,
-										(DWORD)this,
+										(DWORD_PTR)this,
 										TIME_ONESHOT | TIME_CALLBACK_FUNCTION);
 
 	if (!m_uiKeyRepeatTimerID)
@@ -841,8 +842,8 @@ void CMackieControlMaster::OnConnect()
 	CMackieControlXT::OnConnect();
 
 	// Wire these up now that we have a valid m_pMixer
-	m_SwMasterFader.Setup(m_pMixer, m_pTransport);
-	m_SwMasterFaderPan.Setup(m_pMixer, m_pTransport);
+	m_SwMasterFader.Setup(m_pMixer, m_pTransport, &m_FilterLocator);
+	m_SwMasterFaderPan.Setup(m_pMixer, m_pTransport, &m_FilterLocator);
 
 	CCriticalSectionAuto csa(m_cState.GetCS());
 	ReconfigureMaster(true);
