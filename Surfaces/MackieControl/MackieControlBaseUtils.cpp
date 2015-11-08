@@ -127,32 +127,27 @@ bool CMackieControlBase::GetFilterName(SONAR_MIXER_STRIP eMixerStrip, DWORD dwSt
 {
 	pszText[0] = 0;
 
+	// Force ProChannel EQ name to avoid clash with old EQ
+	if ((dwFilterNum == MIX_FILTER_EQ) && m_FilterLocator.IsFlexiblePC())
+	{
+		*pwdLen = static_cast<DWORD>(strlcpy(pszText, "ProChannel EQ", *pwdLen));
+		return true;
+	}
+
 	HRESULT hr = m_pMixer->GetMixParamLabel(eMixerStrip, dwStripNum,
 						MIX_PARAM_FILTER,
 						m_FilterLocator.GetFilterNum(eMixerStrip, dwStripNum, (SONAR_MIXER_FILTER)dwFilterNum),
 						pszText, pwdLen);
 	if (FAILED(hr) || !pszText[0])
 	{
-		if (!m_FilterLocator.IsFlexiblePC())
+		if (!m_FilterLocator.IsFlexiblePC() || (dwFilterNum != MIX_FILTER_COMP))
 			return false;
 		// Can happened if focused strip is MIDI track
-		if (dwFilterNum == MIX_FILTER_EQ)
-		{
-			if (eMixerStrip == MIX_STRIP_BUS)
-				*pwdLen = static_cast<DWORD>(strlcpy(pszText, "Bus EQ", *pwdLen));
-			else
-				*pwdLen = static_cast<DWORD>(strlcpy(pszText, "Track EQ", *pwdLen));
-		}
-		else if (dwFilterNum == MIX_FILTER_COMP)
-		{
-			// There can be one from 2 types, on any strip type
-			if (GetFilterParamCount(eMixerStrip, dwStripNum, dwFilterNum) == 11)
-				*pwdLen = static_cast<DWORD>(strlcpy(pszText, "Bus Comp", *pwdLen));
-			else
-				*pwdLen = static_cast<DWORD>(strlcpy(pszText, "Track Comp", *pwdLen));
-		}
+		// There can be one from 2 types, on any strip type
+		if (GetFilterParamCount(eMixerStrip, dwStripNum, dwFilterNum) == 11)
+			*pwdLen = static_cast<DWORD>(strlcpy(pszText, "Bus Comp", *pwdLen));
 		else
-			return false;
+			*pwdLen = static_cast<DWORD>(strlcpy(pszText, "Track Comp", *pwdLen));
 	}
 	return true;
 }
