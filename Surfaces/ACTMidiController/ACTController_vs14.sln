@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACTController", "ACTController_vs14.vcxproj", "{1F3F291B-4792-416E-9BE5-EDAFFD020107}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Template|Win32 = Template|Win32
+		Template|x64 = Template|x64
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Debug|x64 = Unicode Debug|x64
+		Unicode Release|Win32 = Unicode Release|Win32
+		Unicode Release|x64 = Unicode Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Template|Win32.ActiveCfg = Template|Win32
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Template|Win32.Build.0 = Template|Win32
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Template|x64.ActiveCfg = Template|x64
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Template|x64.Build.0 = Template|x64
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Debug|x64.ActiveCfg = Unicode Debug|x64
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Debug|x64.Build.0 = Unicode Debug|x64
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Release|x64.ActiveCfg = Unicode Release|x64
+		{1F3F291B-4792-416E-9BE5-EDAFFD020107}.Unicode Release|x64.Build.0 = Unicode Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

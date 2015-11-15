@@ -301,11 +301,12 @@ HRESULT CACTController::GetNoEchoStatusMessages( WORD** ppwStatus, DWORD* pdwCou
 		return E_POINTER;
 	*pdwCount = NUM_KNOBS + NUM_SLIDERS + NUM_BUTTONS + 2;	// +2 for the shift modifier messages
 
-	*ppwStatus = (WORD*)::CoTaskMemAlloc( (size_t)(*pdwCount * sizeof(WORD)) );
+	*ppwStatus = (WORD*)::CoTaskMemAlloc( (size_t)((*pdwCount + NUM_BUTTONS) * sizeof(WORD)) ); // + NUM_BUTTONS for possible Note Off events
 	if ( !*ppwStatus )
 		return E_OUTOFMEMORY;
 
 	WORD* pbuf = *ppwStatus;
+	DWORD dwNoteCount = 0;
 
 	// all knobs
 	for ( int ix = 0; ix < NUM_KNOBS; ix++ )
@@ -325,12 +326,21 @@ HRESULT CACTController::GetNoEchoStatusMessages( WORD** ppwStatus, DWORD* pdwCou
 	for ( int ix = 0; ix < NUM_BUTTONS; ix++ )
 	{
 		CMidiBinding& mb = m_cMidiButton[ix];
-		*pbuf++ = mb.GetMessage();
+		WORD wMsg = mb.GetMessage();
+		*pbuf++ = wMsg;
+		if ((wMsg & 0xf0) == 0x90)		// Note ON MIDI event
+		{
+			*pbuf++ = wMsg & 0xffffffef; // -> Note OFF MIDI event (0x9n & 0xef => 0x8n)
+			++dwNoteCount;
+		}
 	}
 
 	// lastly the shift modifiers
 	*pbuf++ = m_cMidiModifierDown.GetMessage();
 	*pbuf++ = m_cMidiModifierUp.GetMessage();
+
+	// add extra Note Off events to the counters
+	*pdwCount += dwNoteCount;
 
 	return S_OK;
 }
