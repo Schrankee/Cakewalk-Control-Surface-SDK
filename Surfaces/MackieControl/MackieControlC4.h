@@ -19,11 +19,11 @@ extern const GUID LIBID_MackieControlC4;
 // Friendly name of component
 
 #ifdef _DEBUG
-static const char s_szMackieControlC4FriendlyName[] = "Mackie Control C4 (DEBUG)";
-static const char s_szMackieControlC4FriendlyNamePropPage[] = "Mackie Control C4 Property Page (DEBUG)";
+static const char s_szMackieControlC4FriendlyName[] = "Mackie Control C4 2 (DEBUG)";
+static const char s_szMackieControlC4FriendlyNamePropPage[] = "Mackie Control C4 2 Property Page (DEBUG)";
 #else
-static const char s_szMackieControlC4FriendlyName[] = "Mackie Control C4";
-static const char s_szMackieControlC4FriendlyNamePropPage[] = "Mackie Control C4 Property Page";
+static const char s_szMackieControlC4FriendlyName[] = "Mackie Control C4 2";
+static const char s_szMackieControlC4FriendlyNamePropPage[] = "Mackie Control C4 2 Property Page";
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
