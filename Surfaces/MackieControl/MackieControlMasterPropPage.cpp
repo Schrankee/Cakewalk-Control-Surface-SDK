@@ -86,6 +86,7 @@ void CMackieControlMasterPropPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FUNCTION3, m_cFunction3);
 	DDX_Control(pDX, IDC_FUNCTION2, m_cFunction2);
 	DDX_Control(pDX, IDC_FUNCTION1, m_cFunction1);
+	DDX_Control(pDX, IDC_DISABLE_HANDSHAKE, m_cDisableHandshake);
 	//}}AFX_DATA_MAP
 
 	if (pDX->m_bSaveAndValidate == TRUE)
@@ -124,6 +125,7 @@ BEGIN_MESSAGE_MAP(CMackieControlMasterPropPage, CDialog)
 	ON_BN_CLICKED(IDC_SELECT_HIGHLIGHTS, OnSelectHighlights)
 	ON_CBN_SELCHANGE(IDC_VIRTUAL_MAIN_TYPE, OnSelchangeVirtualMainType)
 	ON_CBN_SELCHANGE(IDC_METERS, OnSelchangeMeters)
+	ON_BN_CLICKED(IDC_DISABLE_HANDSHAKE, OnDisableHandshake)
 	//}}AFX_MSG_MAP
 
 END_MESSAGE_MAP()
@@ -450,6 +452,9 @@ void CMackieControlMasterPropPage::TransferSettings(bool bSave)
 
 		// Meters
 		m_pSurface->SetDisplayLevelMeters((LevelMeters)m_cMeters.GetItemData(m_cMeters.GetCurSel()));
+
+		// Disable handshake
+		m_pSurface->SetDisableHandshake(m_cDisableHandshake.GetCheck() != 0);
 	}
 	else
 	{
@@ -542,6 +547,9 @@ void CMackieControlMasterPropPage::TransferSettings(bool bSave)
 
 		// Meters
 		SelectItemData(&m_cMeters, m_pSurface->GetDisplayLevelMeters());
+
+		// Disable handshake
+		m_cDisableHandshake.SetCheck(m_pSurface->GetDisableHandshake() ? 1 : 0);
 	}
 }
 
@@ -927,3 +935,10 @@ void CMackieControlMasterPropPage::OnSelchangeMeters()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+
+void CMackieControlMasterPropPage::OnDisableHandshake()
+{
+	UpdateData(TRUE);
+}

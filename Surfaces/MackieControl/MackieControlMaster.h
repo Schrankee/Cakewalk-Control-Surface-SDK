@@ -106,7 +106,9 @@ public:
 	bool HaveLevelMeters();
 	LevelMeters GetDisplayLevelMeters();
 	void SetDisplayLevelMeters(LevelMeters eDisplayLevelMeters);
-	
+	void SetDisableHandshake(bool bVal);
+	bool GetDisableHandshake();
+
 protected:
 	enum MASTER_IDs
 	{
@@ -170,6 +172,7 @@ protected:
 	virtual bool OnMidiInShort(BYTE bStatus, BYTE bD1, BYTE bD2);
 	virtual bool OnMidiInLong(DWORD cbLongMsg, const BYTE* pbLongMsg);
 	virtual void OnReceivedSerialNumber();
+	virtual void QuerySerialNumber(BYTE bDeviceType);
 	void ReconfigureMaster(bool bForce);
 	void ShiftStripNumOffset(int iAmount);
 	void ShiftPluginNumOffset(int iAmount);

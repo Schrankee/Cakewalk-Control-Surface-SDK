@@ -85,6 +85,7 @@ CMackieControlState::CMackieControlState()
 	m_bSoloSelectsChannel = false;
 	m_bSelectHighlightsTrack = false;
 	m_bFaderTouchSelectsChannel = false;
+	m_bDisableHandshake = false;
 
 	m_eJogResolution = JOG_MEASURES;
 	m_eTransportResolution = JOG_MEASURES;
@@ -510,6 +511,13 @@ void CMackieControlState::SetLastDisplayTime(double dLastDisplayTime)
 void CMackieControlState::SetTempDisplayText(const char *szText)
 {
 	::strlcpy(m_szTempDisplayText, szText, sizeof(m_szTempDisplayText));
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void CMackieControlState::SetDisableHandshake(bool bDisableHandshake)
+{
+	m_bDisableHandshake = bDisableHandshake;
 }
 
 /////////////////////////////////////////////////////////////////////////////

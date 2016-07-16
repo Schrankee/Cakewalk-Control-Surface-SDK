@@ -33,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 
 // Version informatin for save/load
-#define PERSISTENCE_VERSION				5
+#define PERSISTENCE_VERSION				6
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -441,6 +441,15 @@ HRESULT CMackieControlMaster::Save( IStream* pStm, BOOL bClearDirty )
 		return E_FAIL;
 	}
 
+	// Disable handshake
+	bool bDisableHandshake = m_cState.GetDisableHandshake();
+	if (FAILED(SafeWrite(pStm, &bDisableHandshake, sizeof(bDisableHandshake))))
+	{
+		TRACE("CMackieControlMaster::Save(): bDisableHandshake failed\n");
+		return E_FAIL;
+	}
+
+
 	if (bClearDirty)
 		m_bDirty = FALSE;
 
@@ -645,6 +654,17 @@ HRESULT CMackieControlMaster::Load( IStream* pStm )
 		m_cState.SetDisplayLevelMeters(eLevelMeters);
 	}
 
+	if (dwVer >= 6)
+	{
+		// Disable handshake
+		bool bDisableHandshake;
+		if (FAILED(SafeRead(pStm, &bDisableHandshake, sizeof(bDisableHandshake))))
+		{
+			TRACE("CMackieControlMaster::Load(): bDisableHandshake failed\n");
+			return E_FAIL;
+		}
+		m_cState.SetDisableHandshake(bDisableHandshake);
+	}
 	m_bDirty = FALSE;
 
 	return S_OK;
@@ -919,6 +939,34 @@ void CMackieControlMaster::OnReceivedSerialNumber()
 	CMackieControlXT::OnReceivedSerialNumber();
 
 	SetRelayClick(!m_cState.GetDisableRelayClick());
+}
+
+void CMackieControlMaster::QuerySerialNumber(BYTE bDeviceType)
+{
+	TRACE("CMackieControlMaster::QuerySerialNumber(): 0x%02X\n", bDeviceType);
+
+	if (!GetDisableHandshake()) {
+		CMackieControlBase::QuerySerialNumber(bDeviceType);
+		return;
+	}
+	// don't start till project is loaded.  The ISonarProject
+	// APIs return E_FAIL if no project is loaded.
+	if (m_pProject && !SUCCEEDED(m_pProject->GetProjectModified()))
+		return;
+
+	if (!m_bHaveSerialNumber)
+	{
+		m_bDeviceType = m_bExpectedDeviceType;
+
+		m_bHaveSerialNumber = true;
+
+		m_bForceRefreshWhenDone = true;
+
+		CCriticalSectionAuto csa(m_cState.GetCS());
+		m_cState.RestoreUnitOffset(this);
+
+		OnReceivedSerialNumber();
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -326,3 +326,21 @@ void CMackieControlMaster::SetDisplayLevelMeters(LevelMeters eDisplayLevelMeters
 }
 
 /////////////////////////////////////////////////////////////////////////////
+
+bool CMackieControlMaster::GetDisableHandshake()
+{
+	CCriticalSectionAuto csa(m_cState.GetCS());
+
+	return m_cState.GetDisableHandshake();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void CMackieControlMaster::SetDisableHandshake(bool bVal)
+{
+	CCriticalSectionAuto csa(m_cState.GetCS());
+
+	m_cState.SetDisableHandshake(bVal);
+}
+
+/////////////////////////////////////////////////////////////////////////////

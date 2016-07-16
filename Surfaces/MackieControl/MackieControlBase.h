@@ -145,7 +145,7 @@ protected:
 
 	void SendUniversalDeviceQuery();
 	void SendWakeUp(BYTE bDeviceType);
-	void QuerySerialNumber(BYTE bDeviceType);
+	virtual void QuerySerialNumber(BYTE bDeviceType);
 
 	void SetLED(BYTE bID, BYTE bVal, bool bForceSend);
 	void UpdateToolbarDisplay(bool bForce);
