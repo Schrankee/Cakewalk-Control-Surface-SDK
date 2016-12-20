@@ -339,6 +339,13 @@ HRESULT CMixParam::GetParamLabel(LPSTR pszText, DWORD *pdwLen)
 	if (!m_bHasBinding)
 		return E_FAIL;
 
+	// AZ: A workaround for Sonar crashing when accessing ProChannel compressor's "Type" label
+	if ((m_eMixerParam == MIX_PARAM_FILTER_PARAM) && (m_dwParamNum == MAKELONG(MIX_FILTER_COMP, 0)))
+	{
+		::strlcpy(pszText, "Type", *pdwLen);
+		return S_OK;
+	}
+
 	return m_pMixer->GetMixParamLabel(m_eMixerStrip, m_dwStripNum,
 									m_eMixerParam, GetParamNum(),
 									pszText, pdwLen);
