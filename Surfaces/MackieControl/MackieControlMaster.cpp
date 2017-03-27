@@ -33,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 
 // Version informatin for save/load
-#define PERSISTENCE_VERSION				6
+#define PERSISTENCE_VERSION				7
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -441,11 +441,19 @@ HRESULT CMackieControlMaster::Save( IStream* pStm, BOOL bClearDirty )
 		return E_FAIL;
 	}
 
-	// Disable handshake
+	// Disable handshake PERSISTENcE_VERSION = 6
 	bool bDisableHandshake = m_cState.GetDisableHandshake();
 	if (FAILED(SafeWrite(pStm, &bDisableHandshake, sizeof(bDisableHandshake))))
 	{
 		TRACE("CMackieControlMaster::Save(): bDisableHandshake failed\n");
+		return E_FAIL;
+	}
+
+	//  PERSISTENcE_VERSION = 7
+	bool bExcludeFiltersFromPlugins = m_cState.GetExcludeFiletersFromPlugins();
+	if (FAILED(SafeWrite(pStm, &bExcludeFiltersFromPlugins, sizeof(bExcludeFiltersFromPlugins))))
+	{
+		TRACE("CMackieControlMaster::Save(): bExcludeFiltersFromPlugins failed\n");
 		return E_FAIL;
 	}
 
@@ -664,6 +672,17 @@ HRESULT CMackieControlMaster::Load( IStream* pStm )
 			return E_FAIL;
 		}
 		m_cState.SetDisableHandshake(bDisableHandshake);
+	}
+	if (dwVer >= 7)
+	{
+		// Disable handshake
+		bool bExcludeFiletersFromPlugins;
+		if (FAILED(SafeRead(pStm, &bExcludeFiletersFromPlugins, sizeof(bExcludeFiletersFromPlugins))))
+		{
+			TRACE("CMackieControlMaster::Load(): bExcludeFiltersFromPlugins failed\n");
+			return E_FAIL;
+		}
+		m_cState.SetExcludeFiltersFromPlugins(bExcludeFiletersFromPlugins);
 	}
 	m_bDirty = FALSE;
 

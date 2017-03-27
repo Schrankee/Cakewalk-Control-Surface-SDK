@@ -520,6 +520,11 @@ void CMackieControlState::SetDisableHandshake(bool bDisableHandshake)
 	m_bDisableHandshake = bDisableHandshake;
 }
 
+void CMackieControlState::SetExcludeFiltersFromPlugins(bool bExcludeFiltersFromPlugins)
+{
+	m_bExcludeFiltersFromPlugins = bExcludeFiltersFromPlugins;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 void CMackieControlState::LoadPluginMappings()

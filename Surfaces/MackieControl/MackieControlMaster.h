@@ -108,6 +108,8 @@ public:
 	void SetDisplayLevelMeters(LevelMeters eDisplayLevelMeters);
 	void SetDisableHandshake(bool bVal);
 	bool GetDisableHandshake();
+	void SetExcludeFiltersFromPlugins(bool bVal);
+	bool GetExcludeFiltersFromPlugins();
 
 protected:
 	enum MASTER_IDs

@@ -43,6 +43,8 @@
 #define IDC_DISP8                       1027
 #define IDC_METERS                      1027
 #define IDC_DISABLE_HANDSHAKE           1028
+#define IDC_DISABLE_HANDSHAKE2          1029
+#define IDC_EXCLUDE_FILTERS_FROM_PLUGINS 1029
 
 // Next default values for new objects
 // 

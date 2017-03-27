@@ -788,7 +788,7 @@ bool CMackieControlBase::GetPluginProperties(SONAR_MIXER_STRIP eMixerStrip, DWOR
 											  char *pszText, DWORD *pdwLen)
 {
 	// Prepend the Track/Bus Eq (filter) to the list, if it exists
-	if (GetFilterExists(eMixerStrip, dwStripNum, 0) && (dwFilterMask & PT_EQ))
+	if (GetFilterExists(eMixerStrip, dwStripNum, 0) && (dwFilterMask & PT_EQ) && !m_cState.GetExcludeFiletersFromPlugins())
 	{
 		// Want to get the details for the filter?
 		if (*dwPluginNum == 0)
@@ -823,7 +823,7 @@ bool CMackieControlBase::GetPluginProperties(SONAR_MIXER_STRIP eMixerStrip, DWOR
 	}
 
 	// Prepend the Track/Bus Compressor (filter) to the list, if it exists
-	if (GetFilterExists(eMixerStrip, dwStripNum, 1) && (dwFilterMask & PT_DYNAMICS))
+	if (GetFilterExists(eMixerStrip, dwStripNum, 1) && (dwFilterMask & PT_DYNAMICS) && !m_cState.GetExcludeFiletersFromPlugins())
 	{
 		// Want to get the details for the filter?
 		if (*dwPluginNum == 0)

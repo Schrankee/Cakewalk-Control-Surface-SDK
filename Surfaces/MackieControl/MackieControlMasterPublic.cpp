@@ -334,6 +334,20 @@ bool CMackieControlMaster::GetDisableHandshake()
 	return m_cState.GetDisableHandshake();
 }
 
+void CMackieControlMaster::SetExcludeFiltersFromPlugins(bool bVal)
+{
+	CCriticalSectionAuto csa(m_cState.GetCS());
+
+	m_cState.SetExcludeFiltersFromPlugins(bVal);
+}
+
+bool CMackieControlMaster::GetExcludeFiltersFromPlugins()
+{
+	CCriticalSectionAuto csa(m_cState.GetCS());
+
+	return m_cState.GetExcludeFiletersFromPlugins();
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 void CMackieControlMaster::SetDisableHandshake(bool bVal)
