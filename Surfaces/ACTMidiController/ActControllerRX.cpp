@@ -51,7 +51,7 @@ void CACTController::OnShortMidiIn(BYTE bStatus, BYTE bD1, BYTE bD2)
 	for (n = 0; n < NUM_BUTTONS; n++)
 	{
 		if (m_cMidiButton[n].IsMatch(bStatus, bD1, bD2))
-			OnButton(n, bD2);
+			OnButton(n, ((bStatus & 0xf0) == 0xc0) ? 1 : bD2); // PC has no value (bD2 is always 0)
 	}
 
 	if (m_cMidiModifierDown.IsMatch(bStatus, bD1, bD2))

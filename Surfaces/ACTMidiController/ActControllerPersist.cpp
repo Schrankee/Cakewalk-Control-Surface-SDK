@@ -253,22 +253,29 @@ HRESULT CACTController::Persist(IStream* pStm, bool bSave, CString *pStr)
 {
 	int iLen;
 
+	// For compatibility, presets are saved in one byte encoding, also when compiled with UNICODE
+	// May be ATL macroses could be better for conversion, but they was "unstable" between
+	// versions before.
+
 	if (bSave)
 	{
-		iLen = pStr->GetLength();
+		CStringA aStr = *pStr;
+		iLen = aStr.GetLength();
 		if (FAILED(Persist(pStm, bSave, &iLen, sizeof(iLen))))
 			return E_FAIL;
-		if (FAILED(Persist(pStm, bSave, (void *)(LPCTSTR)(*pStr), iLen)))
+		if (FAILED(Persist(pStm, bSave, (void *)(LPCSTR)(aStr), iLen)))
 			return E_FAIL;
 	}
 	else
 	{
 		if (FAILED(Persist(pStm, bSave, &iLen, sizeof(iLen))))
 			return E_FAIL;
-		HRESULT hr = Persist(pStm, bSave, pStr->GetBuffer(iLen), iLen);
-		pStr->ReleaseBuffer(iLen);
+		CStringA aStr;
+		HRESULT hr = Persist(pStm, bSave, aStr.GetBuffer(iLen), iLen);
+		aStr.ReleaseBuffer(iLen);
 		if (FAILED(hr))
 			return E_FAIL;
+		*pStr = aStr;
 	}
 
 	return S_OK;
