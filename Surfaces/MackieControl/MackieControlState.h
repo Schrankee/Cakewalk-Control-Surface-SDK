@@ -236,6 +236,8 @@ public:
 	DWORD GetNextUniqueId()				{ return m_dwUniqueIdCount++; };
 	DWORD GetFirstFaderNumber()			{ return m_dwFirstFaderNumber; };
 	DWORD GetLastFaderNumber()			{ return m_dwLastFaderNumber; };
+	bool GetDisableHandshake()			{ return m_bDisableHandshake; };
+	bool GetExcludeFiletersFromPlugins(){ return m_bExcludeFiltersFromPlugins; }
 
 	// Setters
 	void SetConfigureLayoutMode(bool bConfigureLayoutMode);
@@ -270,6 +272,8 @@ public:
 	void SetJogResolution(JogResolution eJogResolution);
 	void SetTransportResolution(JogResolution eTransportResolution);
 	void SetLastDisplayTime(double dLastDisplayTime);
+	void SetDisableHandshake(bool bDisableHandshake);
+	void SetExcludeFiltersFromPlugins(bool bExcludeFiltersFromPlugins);
 
 	void SetTempDisplayText(const char *szText);
 
@@ -333,6 +337,8 @@ protected:
 	bool m_bSoloSelectsChannel;
 	bool m_bSelectHighlightsTrack;
 	bool m_bFaderTouchSelectsChannel;
+	bool m_bDisableHandshake;
+	bool m_bExcludeFiltersFromPlugins;
 	CKeyBinding m_cUserFunctionKeys[NUM_USER_FUNCTION_KEYS];
 	CKeyBinding m_cUserFootSwitch[NUM_USER_FOOT_SWITCHES];
 	JogResolution m_eJogResolution;
